@@ -9,9 +9,9 @@ A [Docker](http://docker.com) file to build [Hugo](https://gohugo.io), one of th
 - [GitHub](https://github.com/DeftWork/rpi-hugo)
 - [Deft.Work my personal blog](https://deft.work)
 
-| Docker Hub | Docker Pulls | Docker Stars | Docker Build | Size/Layers |
-| --- | --- | --- | --- | --- |
-| [rpi-hugo](https://hub.docker.com/r/elswork/rpi-hugo "elswork/rpi-hugo on Docker Hub") | [![](https://img.shields.io/docker/pulls/elswork/rpi-hugo.svg)](https://hub.docker.com/r/elswork/rpi-hugo "rpi-hugo on Docker Hub") | [![](https://img.shields.io/docker/stars/elswork/rpi-hugo.svg)](https://hub.docker.com/r/elswork/rpi-hugo "rpi-hugo on Docker Hub") | [![](https://img.shields.io/docker/build/elswork/rpi-hugo.svg)](https://hub.docker.com/r/elswork/rpi-hugo "rpi-hugo on Docker Hub") | [![](https://images.microbadger.com/badges/image/elswork/rpi-hugo.svg)](https://microbadger.com/images/elswork/rpi-hugo "rpi-hugo on microbadger.com") |
+| Docker Hub | Docker Pulls | Docker Stars | Size/Layers |
+| --- | --- | --- | --- |
+| [rpi-hugo](https://hub.docker.com/r/elswork/rpi-hugo "elswork/rpi-hugo on Docker Hub") | [![](https://img.shields.io/docker/pulls/elswork/rpi-hugo.svg)](https://hub.docker.com/r/elswork/rpi-hugo "rpi-hugo on Docker Hub") | [![](https://img.shields.io/docker/stars/elswork/rpi-hugo.svg)](https://hub.docker.com/r/elswork/rpi-hugo "rpi-hugo on Docker Hub") | [![](https://images.microbadger.com/badges/image/elswork/rpi-hugo.svg)](https://microbadger.com/images/elswork/rpi-hugo "rpi-hugo on microbadger.com") |
 
 ## Build Instructions
 
