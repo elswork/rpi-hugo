@@ -42,4 +42,4 @@ manifest: ## Create an push manifest
 generate: ## Generate a site
 	docker run --rm -v /home/pirate/docker/Hugo/Sites/deft.work:/src --name HugoBuild $(NAME):$(GOARCH) --cleanDestinationDir
 serve: ## Test Serving
-	docker run -p 1313:1313 -v /home/pirate/docker/Hugo/Sites/deft.work:/src $(NAME):$(GOARCH) server -b http://deft.work/ --bind=0.0.0.0 -w
+	docker run -p 1313:1313 -v /home/pirate/docker/Hugo/Sites/deft.work:/src $(NAME):$(GOARCH) server -b http://deft.work --bind=0.0.0.0 -w
