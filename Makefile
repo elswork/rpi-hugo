@@ -1,10 +1,10 @@
 SNAME ?= rpi-hugo
 NAME ?= elswork/$(SNAME)
 BASENAME ?= alpine
-GOARCH ?= armv7l
-#GOARCH ?= amd64
-ARCHITECTURE ?= ARM
-#ARCHITECTURE ?= 64bit
+#GOARCH ?= armv7l
+GOARCH ?= amd64
+#ARCHITECTURE ?= ARM
+ARCHITECTURE ?= 64bit
 ARCH2 ?= armv7l
 VER ?= `cat VERSION`
 
