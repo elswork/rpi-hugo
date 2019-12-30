@@ -2,11 +2,11 @@
 
 A [Docker](http://docker.com) file to build [Hugo](https://gohugo.io), one of the most popular open-source static site generators for AMD & ARM devices over an alpine base image based.
 
-> Be aware! You should read carefully the usage documentation of [Hugo](https://gohugo.io)!
+> Be aware! You should read carefully the usage documentation of every tool!
 
 ## Details
 
-- [GitHub](https://github.com/DeftWork/rpi-hugo)
+- [GitHub](https://github.com/elswork/rpi-hugo)
 - [Deft.Work my personal blog](https://deft.work)
 
 | Docker Hub | Docker Pulls | Docker Stars | Size/Layers |
@@ -15,16 +15,10 @@ A [Docker](http://docker.com) file to build [Hugo](https://gohugo.io), one of th
 
 ## Build Instructions
 
-Build for amd64 architecture
+Build for amd64, armv7l or arm64 architecture (thanks to its [Multi-Arch](https://blog.docker.com/2017/11/multi-arch-all-the-things/) base image)
 
 ```bash
-docker build -t elswork/rpi-hugo:amd64 .
-```
-
-Build for armv7l architecture
-
-```bash
-docker build -t elswork/rpi-hugo:armv7l .
+docker build -t elswork/rpi-hugo .
 ```
 
 ## Usage Example
@@ -54,3 +48,5 @@ docker run -p 1313:1313 -v /path/to/**sitename**:/src elswork/rpi-hugo server -b
 ```bash
 docker run --rm -v /path/to/**sitename**:/src --name HugoBuild elswork/rpi-hugo --cleanDestinationDir
 ```
+
+**[Sponsor me!](https://github.com/sponsors/elswork) Together we will be unstoppable.**

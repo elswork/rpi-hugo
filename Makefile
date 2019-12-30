@@ -70,5 +70,3 @@ serve: ## Test Serving
 	docker run --rm -p 1313:1313 -v $(RUTA)/$(SITE):$(TO) $(NAME):$(GOARCH) server -b http://deft.work --bind=0.0.0.0 -w
 post:
 	docker run --rm -v $(RUTA)/$(SITE):$(TO) $(NAME):$(GOARCH) new post/2099-12-31-nuevo-articulo/index.md
-up:
-	docker-compose -f $(RUTA)/$(SITE)/docker-compose.yml up -d
