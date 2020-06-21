@@ -3,7 +3,9 @@ NAME ?= elswork/$(SNAME)
 VER ?= `cat VERSION`
 BASE ?= latest
 BASENAME ?= alpine:$(BASE)
+#RUTA ?= /home/pirate/docker/hugosample
 RUTA ?= /home/pirate/docker/www
+#SITE ?= test
 SITE ?= elswork.github.io
 TO ?= /src
 ARCH2 ?= armv7l
@@ -36,7 +38,8 @@ help: ## This help.
 debug: ## Build the container
 	docker build -t $(NAME):$(GOARCH) \
 	--build-arg BASEIMAGE=$(BASENAME) \
-	--build-arg VERSION=$(SNAME)_$(GOARCH)_$(VER) .
+	--build-arg VERSION=$(SNAME)_$(GOARCH)_$(VER) \
+	--build-arg HUGO_VERSION=$(VER) .
 build: ## Build the container
 	docker build --no-cache -t $(NAME):$(GOARCH) \
 	--build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
@@ -62,6 +65,8 @@ manifest: ## Create an push manifest
 	$(NAME):$(ARCH2) \
 	$(NAME):$(ARCH3)
 	docker manifest push --purge $(NAME):latest
+console: ## Open console
+	docker run -it --rm --entrypoint "/bin/ash" $(NAME):$(GOARCH)
 newsite: ## Generate a site
 	docker run --rm -v $(RUTA):$(TO) $(NAME):$(GOARCH) new site $(SITE)
 generate: ## Build a site
@@ -70,3 +75,7 @@ serve: ## Test Serving
 	docker run --rm -p 1313:1313 -v $(RUTA)/$(SITE):$(TO) $(NAME):$(GOARCH) server -b http://deft.work --bind=0.0.0.0 -w
 post:
 	docker run --rm -v $(RUTA)/$(SITE):$(TO) $(NAME):$(GOARCH) new post/2099-12-31-nuevo-articulo/index.md
+theme:
+	docker run --rm -v $(RUTA)/$(SITE):$(TO) $(NAME):$(GOARCH) new theme anticitera
+version:
+	docker run --rm -v $(RUTA)/$(SITE):$(TO) $(NAME):$(GOARCH) version
