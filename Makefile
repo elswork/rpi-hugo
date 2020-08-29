@@ -1,5 +1,5 @@
 SNAME ?= rpi-hugo
-NAME ?= elswork/$(SNAME)
+RNAME ?= elswork/$(SNAME)
 VER ?= `cat VERSION`
 BASE ?= latest
 BASENAME ?= alpine:$(BASE)
@@ -33,49 +33,66 @@ help: ## This help.
 .DEFAULT_GOAL := help
 
 # DOCKER TASKS
-# Build the container
 
-debug: ## Build the container
-	docker build -t $(NAME):$(GOARCH) \
+# New build way
+
+bootstrap: ## Start multicompiler
+	docker buildx inspect --bootstrap
+buildx: ## Buildx the container
+	docker buildx build \
+	--platform linux/amd64,linux/arm64,linux/ppc64le,linux/s390x,linux/386,linux/arm/v7,linux/arm/v6 \
+  	-t $(RNAME):latest -t $(RNAME):$(VER) --push \
+	--build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
+	--build-arg VCS_REF=`git rev-parse --short HEAD` \
 	--build-arg BASEIMAGE=$(BASENAME) \
-	--build-arg VERSION=$(SNAME)_$(GOARCH)_$(VER) \
+	--build-arg VERSION=$(VER) .
+
+# Old build way
+
+debug: ## Debug the container
+	docker build -t $(RNAME):$(GOARCH) \
+	--build-arg BASEIMAGE=$(BASENAME) \
+	--build-arg VERSION=$(GOARCH)_$(VER) \
 	--build-arg HUGO_VERSION=$(VER) .
 build: ## Build the container
-	docker build --no-cache -t $(NAME):$(GOARCH) \
+	docker build --no-cache -t $(RNAME):$(GOARCH) \
 	--build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
 	--build-arg VCS_REF=`git rev-parse --short HEAD` \
 	--build-arg BASEIMAGE=$(BASENAME) \
 	--build-arg ARCH=$(ARCHITECTURE) \
 	--build-arg HUGO_VERSION=$(VER) \
 	--build-arg VERSION=$(GOARCH)_$(VER) \
-	. > ../builds/$(SNAME)_$(GOARCH)_$(VER)_`date +"%Y%m%d_%H%M%S"`.txt
+	. > builds/$(GOARCH)_$(VER)_`date +"%Y%m%d_%H%M%S"`.txt
 tag: ## Tag the container
-	docker tag $(NAME):$(GOARCH) $(NAME):$(GOARCH)_$(VER)
+	docker tag $(RNAME):$(GOARCH) $(RNAME):$(GOARCH)_$(VER)
 push: ## Push the container
-	docker push $(NAME):$(GOARCH)_$(VER)
-	docker push $(NAME):$(GOARCH)	
+	docker push $(RNAME):$(GOARCH)_$(VER)
+	docker push $(RNAME):$(GOARCH)	
 deploy: build tag push
 manifest: ## Create an push manifest
-	docker manifest create $(NAME):$(VER) \
-	$(NAME):$(GOARCH)_$(VER) \
-	$(NAME):$(ARCH2)_$(VER) \
-	$(NAME):$(ARCH3)_$(VER)
-	docker manifest push --purge $(NAME):$(VER)
-	docker manifest create $(NAME):latest $(NAME):$(GOARCH) \
-	$(NAME):$(ARCH2) \
-	$(NAME):$(ARCH3)
-	docker manifest push --purge $(NAME):latest
+	docker manifest create $(RNAME):$(VER) \
+	$(RNAME):$(GOARCH)_$(VER) \
+	$(RNAME):$(ARCH2)_$(VER) \
+	$(RNAME):$(ARCH3)_$(VER)
+	docker manifest push --purge $(RNAME):$(VER)
+	docker manifest create $(RNAME):latest $(RNAME):$(GOARCH) \
+	$(RNAME):$(ARCH2) \
+	$(RNAME):$(ARCH3)
+	docker manifest push --purge $(RNAME):latest
+
+# Operations
+
 console: ## Open console
-	docker run -it --rm --entrypoint "/bin/ash" $(NAME):$(GOARCH)
+	docker run -it --rm --entrypoint "/bin/ash" $(RNAME):$(GOARCH)
 newsite: ## Generate a site
-	docker run --rm -v $(RUTA):$(TO) $(NAME):$(GOARCH) new site $(SITE)
+	docker run --rm -v $(RUTA):$(TO) $(RNAME):$(GOARCH) new site $(SITE)
 generate: ## Build a site
-	docker run --rm -v $(RUTA)/$(SITE):$(TO) $(NAME):$(GOARCH) --cleanDestinationDir
+	docker run --rm -v $(RUTA)/$(SITE):$(TO) $(RNAME):$(GOARCH) --cleanDestinationDir
 serve: ## Test Serving
-	docker run --rm -p 1313:1313 -v $(RUTA)/$(SITE):$(TO) $(NAME):$(GOARCH) server -b http://deft.work --bind=0.0.0.0 -w
+	docker run --rm -p 1313:1313 -v $(RUTA)/$(SITE):$(TO) $(RNAME):$(GOARCH) server -b http://deft.work --bind=0.0.0.0 -w
 post:
-	docker run --rm -v $(RUTA)/$(SITE):$(TO) $(NAME):$(GOARCH) new post/2099-12-31-nuevo-articulo/index.md
+	docker run --rm -v $(RUTA)/$(SITE):$(TO) $(RNAME):$(GOARCH) new post/2099-12-31-nuevo-articulo/index.md
 theme:
-	docker run --rm -v $(RUTA)/$(SITE):$(TO) $(NAME):$(GOARCH) new theme anticitera
+	docker run --rm -v $(RUTA)/$(SITE):$(TO) $(RNAME):$(GOARCH) new theme anticitera
 version:
-	docker run --rm -v $(RUTA)/$(SITE):$(TO) $(NAME):$(GOARCH) version
+	docker run --rm -v $(RUTA)/$(SITE):$(TO) $(RNAME):$(GOARCH) version
