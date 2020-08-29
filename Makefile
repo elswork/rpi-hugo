@@ -83,16 +83,16 @@ manifest: ## Create an push manifest
 # Operations
 
 console: ## Open console
-	docker run -it --rm --entrypoint "/bin/ash" $(RNAME):$(GOARCH)
+	docker run -it --rm --entrypoint "/bin/ash" $(RNAME):$(VER)
 newsite: ## Generate a site
-	docker run --rm -v $(RUTA):$(TO) $(RNAME):$(GOARCH) new site $(SITE)
+	docker run --rm -v $(RUTA):$(TO) $(RNAME):$(VER) new site $(SITE)
 generate: ## Build a site
-	docker run --rm -v $(RUTA)/$(SITE):$(TO) $(RNAME):$(GOARCH) --cleanDestinationDir
+	docker run --rm -v $(RUTA)/$(SITE):$(TO) $(RNAME):$(VER) --cleanDestinationDir
 serve: ## Test Serving
-	docker run --rm -p 1313:1313 -v $(RUTA)/$(SITE):$(TO) $(RNAME):$(GOARCH) server -b http://deft.work --bind=0.0.0.0 -w
+	docker run --rm -p 1313:1313 -v $(RUTA)/$(SITE):$(TO) $(RNAME):$(VER) server -b http://deft.work --bind=0.0.0.0 -w
 post:
-	docker run --rm -v $(RUTA)/$(SITE):$(TO) $(RNAME):$(GOARCH) new post/2099-12-31-nuevo-articulo/index.md
+	docker run --rm -v $(RUTA)/$(SITE):$(TO) $(RNAME):$(VER) new post/2099-12-31-nuevo-articulo/index.md
 theme:
-	docker run --rm -v $(RUTA)/$(SITE):$(TO) $(RNAME):$(GOARCH) new theme anticitera
+	docker run --rm -v $(RUTA)/$(SITE):$(TO) $(RNAME):$(VER) new theme anticitera
 version:
-	docker run --rm -v $(RUTA)/$(SITE):$(TO) $(RNAME):$(GOARCH) version
+	docker run --rm -v $(RUTA)/$(SITE):$(TO) $(RNAME):$(VER) version
