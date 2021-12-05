@@ -87,7 +87,7 @@ console: ## Open console
 newsite: ## Generate a site
 	docker run --rm -v $(RUTA):$(TO) $(RNAME):$(VER) new site $(SITE)
 generate: ## Build a site
-	docker run --rm -v $(RUTA)/$(SITE):$(TO) $(RNAME):$(VER) --cleanDestinationDir
+	docker run --rm -v $(RUTA)/$(SITE):$(TO) $(RNAME):$(VER) --minify --cleanDestinationDir
 serve: ## Test Serving
 	docker run --rm -p 1313:1313 -v $(RUTA)/$(SITE):$(TO) $(RNAME):$(VER) server -b http://deft.work --bind=0.0.0.0 -w
 post:
