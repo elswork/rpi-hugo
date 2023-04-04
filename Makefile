@@ -1,30 +1,24 @@
-SNAME ?= rpi-hugo
-RNAME ?= elswork/$(SNAME)
+#SNAME ?= rpi-hugo
+#RNAME ?= elswork/$(SNAME)
+SNAME ?= hugo
+RNAME ?= klakegg/$(SNAME)
 VER ?= `cat VERSION`
-BASE ?= latest
-BASENAME ?= alpine:$(BASE)
+BASENAME ?= alpine:latest
 #RUTA ?= /home/pirate/docker/hugosample
 RUTA ?= /home/pirate/docker/www
 #SITE ?= test
 SITE ?= elswork.github.io
 TO ?= /src
-ARCH2 ?= armv7l
-ARCH3 ?= aarch64
-GOARCH := $(shell uname -m)
-ifeq ($(GOARCH),x86_64)
-	GOARCH := amd64
-	ARCHITECTURE := 64bit
-endif
-ifeq ($(GOARCH),aarch64)
-	ARCHITECTURE := ARM64
-endif
-ifeq ($(GOARCH),armv7l)
-	ARCHITECTURE := ARM
-endif
+TARGET_PLATFORM ?= linux/amd64,linux/arm64,linux/ppc64le,linux/s390x,linux/386,linux/arm/v7,linux/arm/v6
+# linux/amd64,linux/arm64,linux/ppc64le,linux/s390x,linux/386,linux/arm/v7,linux/arm/v6
+NO_CACHE ?= 
+# NO_CACHE ?= --no-cache
+#MODE ?= debug
+MODE ?= $(VER)
 
 # HELP
 # This will output the help for each task
-# thanks to https://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
+
 .PHONY: help
 
 help: ## This help.
@@ -90,7 +84,7 @@ generate: ## Build a site
 	docker run --rm -v $(RUTA)/$(SITE):$(TO) $(RNAME):$(VER) --minify --cleanDestinationDir
 serve: ## Test Serving
 	docker run --rm -p 1313:1313 -v $(RUTA)/$(SITE):$(TO) $(RNAME):$(VER) server -b http://deft.work --bind=0.0.0.0 -w
-post:
+post: ## Do not use this
 	docker run --rm -v $(RUTA)/$(SITE):$(TO) $(RNAME):$(VER) new post/2099-12-31-nuevo-articulo/index.md
 theme:
 	docker run --rm -v $(RUTA)/$(SITE):$(TO) $(RNAME):$(VER) new theme anticitera
